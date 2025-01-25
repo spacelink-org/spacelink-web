@@ -4,13 +4,20 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
     plugins: [react()],
-    // base: '/',
     resolve: {
         alias: {
             '@': path.resolve(__dirname, './src'),
         },
     },
+    build: {
+        outDir: 'dist',
+        assetsDir: 'bundle',
+    },
+    publicDir: 'src/assets',
     server: {
         port: 3000,
+        fs: {
+            allow: ['..'],
+        },
     },
 })
