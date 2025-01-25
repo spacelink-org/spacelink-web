@@ -21,7 +21,7 @@ import { useSearchParams } from 'react-router'
 import { toast } from 'sonner'
 import { CustomerDetails } from './components/customer-details'
 import { useState } from 'react'
-import { CustomerTableFilters } from './components/customer-filters'
+// import { CustomerTableFilters } from './components/customer-filters'
 import { getUsers } from '@/shared/api/get-users'
 import {
     createUser,
@@ -230,9 +230,9 @@ export default function CustomersPage() {
                         </Dialog>
                     </div>
                 </div>
-                <div className='flex justify-center w-full'>
+                {/* <div className='flex justify-center w-full'>
                     <CustomerTableFilters />
-                </div>
+                </div> */}
                 <DataTable columns={columns} data={result || []} />
             </div>
         </div>

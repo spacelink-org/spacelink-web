@@ -29,14 +29,18 @@ export const useAuth = create<AuthStore>((set) => ({
                 password,
                 redirectLink: '',
             }).then((data) => {
-                set({ isLoggingIn: false })
-                toast.success('!')
-                Cookies.set('auth_token', data, {
-                    expires: 7,
-                    secure: true,
-                    sameSite: 'strict',
-                })
-                set({ token: data })
+                if (data.status === 200) {
+                    set({ isLoggingIn: false })
+                    toast.success('Login realizado com sucesso!')
+                    Cookies.set('auth_token', data.data, {
+                        expires: 7,
+                        secure: true,
+                        sameSite: 'strict',
+                    })
+                    set({ token: data.data })
+                } else {
+                    toast.error('Email ou senha inválidos, tente novamente!')
+                }
             })
         } catch {
             set({ isLoggingIn: false })

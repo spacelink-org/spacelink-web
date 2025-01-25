@@ -2,6 +2,7 @@ import { Label } from '@/components/atoms/label'
 import { Outlet } from 'react-router'
 import LogoIcon from '@/assets/icons/favicon.ico'
 import { useIsMobile } from '../hooks/use-mobile'
+import Noise from '@/assets/images/noise.png'
 
 export default function AuthLayout() {
     if (useIsMobile()) {
@@ -37,7 +38,13 @@ export default function AuthLayout() {
                     </div>
                 </div>
                 <div className='relative hidden lg:block p-4'>
-                    <div className='flex w-full h-full bg-noise bg-cover rounded-lg'></div>
+                    <div className='flex w-full h-full rounded-lg'>
+                        <img
+                            src={Noise}
+                            alt='Noise'
+                            className='w-full h-full object-cover rounded-lg'
+                        />
+                    </div>
                 </div>
             </div>
         )
