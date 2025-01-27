@@ -13,11 +13,9 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAuth } from '@/shared/hooks/use-auth'
 import { LoginPayload, LoginSchema } from '@/shared/types/dto/login-dto'
-import { Separator } from '@/components/atoms/separator'
 
 export const LoginPage = () => {
-    const { signIn } = useAuth()
-
+    const { signIn, isLoggingIn } = useAuth()
     const { register, handleSubmit } = useForm<LoginPayload>({
         resolver: zodResolver(LoginSchema),
     })
@@ -42,13 +40,14 @@ export const LoginPage = () => {
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit(handleSignIn)}>
-                        <div className='flex flex-col gap-6'>
+                        <div className='flex flex-col gap-2'>
                             <div className='grid gap-2'>
                                 <Label htmlFor='email'>E-mail</Label>
                                 <Input
                                     id='email'
                                     type='email'
-                                    placeholder='m@exemplo.com'
+                                    placeholder='email@exemplo.com'
+                                    disabled={isLoggingIn}
                                     required
                                     {...register('email')}
                                 />
@@ -66,16 +65,19 @@ export const LoginPage = () => {
                                 <Input
                                     id='password'
                                     type='password'
+                                    placeholder='**************'
                                     required
+                                    disabled={isLoggingIn}
                                     {...register('password')}
                                 />
                             </div>
-                            <Button type='submit' className='w-full'>
+                            <Button
+                                type='submit'
+                                className='w-full'
+                                loading={isLoggingIn}
+                                disabled={isLoggingIn}
+                            >
                                 Entrar
-                            </Button>
-                            <Separator />
-                            <Button variant='outline' className='w-full'>
-                                Entrar com o Google
                             </Button>
                         </div>
                         <div className='mt-4 text-center text-sm'>

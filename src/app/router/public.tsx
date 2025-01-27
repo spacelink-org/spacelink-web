@@ -1,6 +1,11 @@
 import { Navigate } from 'react-router'
 import AuthLayout from '../../shared/layouts/auth.layout'
-import { LoginRoutes, RegisterRoutes } from '../pages/auth/routes'
+import {
+    LoginRoutes,
+    PaymentRoutes,
+    RedirectRoutes,
+    RegisterRoutes,
+} from '../pages/auth/routes'
 
 export const publicRoutes = [
     {
@@ -10,6 +15,8 @@ export const publicRoutes = [
         children: [
             { path: 'login/*', element: <LoginRoutes /> },
             { path: 'register/*', element: <RegisterRoutes /> },
+            { path: 'redirect/*', element: <RedirectRoutes /> },
+            { path: 'payment/*', element: <PaymentRoutes /> },
             { path: '*', element: <Navigate to='/auth/login' /> },
         ],
     },

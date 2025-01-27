@@ -18,6 +18,6 @@ export const createUserSchema = z.object({
 export type CreateUserPayload = z.infer<typeof createUserSchema>
 
 export const createUser = async (payload: CreateUserPayload) => {
-    const response = await api.post('/users/create', payload)
+    const response = await api.post('/customers/create', payload)
     return response.data
 }

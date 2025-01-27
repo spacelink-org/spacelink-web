@@ -15,21 +15,32 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/atoms/table'
+import { DataTableLoading } from '../loading/data-table-loading'
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
+    isLoading?: boolean
 }
 
 export function DataTable<TData, TValue>({
     columns,
     data,
+    isLoading = false,
 }: DataTableProps<TData, TValue>) {
     const table = useReactTable({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
     })
+
+    if (isLoading) {
+        return (
+            <div className='flex justify-center items-center h-full border rounded-md p-4'>
+                <DataTableLoading />
+            </div>
+        )
+    }
 
     return (
         <div className='rounded-md border'>

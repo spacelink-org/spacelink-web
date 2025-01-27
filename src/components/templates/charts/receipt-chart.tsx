@@ -10,7 +10,6 @@ import {
     YAxis,
 } from 'recharts'
 import { violet } from 'tailwindcss/colors'
-
 import { Button } from '@/components/atoms/button'
 import {
     Card,
@@ -19,6 +18,8 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/atoms/card'
+import { useQuery } from '@tanstack/react-query'
+import { getTransactions } from '@/shared/api/get-transactions'
 
 interface ReceiptDataPerMonth {
     date: string
@@ -53,9 +54,31 @@ function CustomTooltip({
 }
 
 export function ReceiptChart() {
-    const monthReceiptsLoading: [] = []
-    const dailyReceiptInPeriod: [] = []
-    const monthReceipts: [] = []
+    const { data: results, isLoading: isLoadingResults } = useQuery({
+        queryKey: ['transactions'],
+        queryFn: () => getTransactions(),
+    })
+
+    const creditsInMonthPeriod =
+        results?.filter((transaction) => transaction.type === 'credit') ?? []
+
+    const debitsInMonthPeriod =
+        results?.filter((transaction) => transaction.type === 'debit') ?? []
+
+    const dailyReceiptInPeriod = creditsInMonthPeriod.map((transaction) => ({
+        date: new Date(transaction.createdAt).toLocaleDateString('pt-BR'),
+        receipt: transaction.amount,
+    }))
+
+    const dailyDebitInPeriod = debitsInMonthPeriod.map((transaction) => ({
+        date: new Date(transaction.createdAt).toLocaleDateString('pt-BR'),
+        receipt: transaction.amount,
+    }))
+
+    const debitsAndCreditsInPeriod = [
+        ...dailyReceiptInPeriod,
+        ...dailyDebitInPeriod,
+    ]
 
     return (
         <Card className='col-span-6'>
@@ -63,7 +86,7 @@ export function ReceiptChart() {
                 <div className='space-y-1'>
                     <CardTitle className='flex items-center gap-2 text-base font-medium'>
                         Receita no período
-                        {monthReceiptsLoading && (
+                        {isLoadingResults && (
                             <Loader2 className='h-4 w-4 animate-spin text-muted-foreground' />
                         )}
                     </CardTitle>
@@ -71,9 +94,9 @@ export function ReceiptChart() {
                 </div>
             </CardHeader>
             <CardContent>
-                {dailyReceiptInPeriod ? (
+                {debitsAndCreditsInPeriod ? (
                     <>
-                        {monthReceipts.length && monthReceipts.length > 0 ? (
+                        {results?.length && results?.length > 0 ? (
                             <ResponsiveContainer width='100%' height={240}>
                                 <LineChart
                                     data={dailyReceiptInPeriod}

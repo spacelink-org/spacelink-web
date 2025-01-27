@@ -10,28 +10,35 @@ import {
 } from '@/components/atoms/dialog'
 import { Input } from '@/components/atoms/input'
 import { Label } from '@/components/atoms/label'
-import { DataTable } from '@/components/templates/table/row'
+import { DataTable } from '@/components/templates/table/data-table'
 import { isoToBrDate } from '@/utils/iso-to-br-date'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useQuery } from '@tanstack/react-query'
-import { Pencil, Loader2 } from 'lucide-react'
+import { Loader2, FolderOpenDotIcon } from 'lucide-react'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router'
 import { toast } from 'sonner'
 import { CustomerDetails } from './components/customer-details'
 import { useState } from 'react'
-// import { CustomerTableFilters } from './components/customer-filters'
-import { getUsers } from '@/shared/api/get-users'
+import { Status } from '@/shared/api/types/user'
+import { getUsers } from '@/shared/api/get-customers'
 import {
     createUser,
     CreateUserPayload,
     createUserSchema,
-} from '@/shared/api/create-user'
+} from '@/shared/api/create-customers'
+import { UserStatusBadge } from '@/components/templates/badges/user-status-badge'
+import { InputMask } from '@/components/organisms/input-mask'
+import { formatPhone } from '@/utils/number-to-phone'
+import { formatDocument } from '@/utils/number-to-cpf'
 
 export default function CustomersPage() {
     const [searchParams, setSearchParams] = useSearchParams()
     const [mutateLoading, setMutateLoading] = useState(false)
+
+    const [document, setDocument] = useState('')
+    const [phone, setPhone] = useState('')
 
     const containsCustomerId = searchParams.get('id')
     const addDialogOpen = searchParams.get('?') === 'true'
@@ -89,7 +96,11 @@ export default function CustomersPage() {
             })
     }
 
-    const { data: result, refetch: refetchUsers } = useQuery({
+    const {
+        data: result,
+        refetch: refetchUsers,
+        isLoading,
+    } = useQuery({
         queryKey: ['users'],
         queryFn: () => getUsers(),
     })
@@ -111,7 +122,13 @@ export default function CustomersPage() {
             header: 'Telefone',
             accessorKey: 'phone',
             cell: (info: { getValue: () => unknown }) =>
-                info.getValue() as string,
+                formatPhone(info.getValue() as string),
+        },
+        {
+            header: 'Documento',
+            accessorKey: 'document',
+            cell: (info: { getValue: () => unknown }) =>
+                formatDocument(info.getValue() as string),
         },
         {
             header: 'Criado em',
@@ -120,18 +137,25 @@ export default function CustomersPage() {
                 isoToBrDate(info.getValue() as string),
         },
         {
+            header: 'Status',
+            accessorKey: 'status',
+            cell: (info: { getValue: () => unknown }) => (
+                <UserStatusBadge status={info.getValue() as Status} />
+            ),
+        },
+        {
             header: '',
             accessorKey: 'id',
             cell: (info: { getValue: () => unknown }) => (
                 <>
                     <Button
-                        variant='outline'
+                        variant='ghost'
                         size='icon'
                         onClick={() =>
                             setContainsCustomerId(info.getValue() as string)
                         }
                     >
-                        <Pencil />
+                        <FolderOpenDotIcon size={10} />
                     </Button>
                     <Dialog
                         open={containsCustomerId === info.getValue()}
@@ -205,13 +229,19 @@ export default function CustomersPage() {
                                             {...register('email')}
                                         />
                                     </div>
-                                    <Input
+                                    <InputMask
                                         placeholder='Telefone'
                                         {...register('phone')}
+                                        mask='(##) #####-####'
+                                        onChange={(value) => setPhone(value)}
+                                        value={phone}
                                     />
-                                    <Input
+                                    <InputMask
                                         placeholder='Documento'
                                         {...register('document')}
+                                        mask='###.###.###-##'
+                                        onChange={(value) => setDocument(value)}
+                                        value={document}
                                     />
                                     <div className='flex items-center gap-2 my-2'>
                                         <Checkbox />
@@ -230,10 +260,11 @@ export default function CustomersPage() {
                         </Dialog>
                     </div>
                 </div>
-                {/* <div className='flex justify-center w-full'>
-                    <CustomerTableFilters />
-                </div> */}
-                <DataTable columns={columns} data={result || []} />
+                <DataTable
+                    columns={columns}
+                    data={result || []}
+                    isLoading={isLoading}
+                />
             </div>
         </div>
     )

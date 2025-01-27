@@ -1,7 +1,3 @@
-export function numberToCpf(number: number): string {
-    const cpfString = String(number).padStart(11, '0')
-    return cpfString
-        .replace(/(\d{3})(\d)/, '$1.$2')
-        .replace(/(\d{3})(\d)/, '$1.$2')
-        .replace(/(\d{3})(\d{1,2})$/, '$1-$2')
+export const formatDocument = (document: string) => {
+    return document.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')
 }

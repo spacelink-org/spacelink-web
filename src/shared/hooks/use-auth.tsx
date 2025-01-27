@@ -24,24 +24,34 @@ export interface AuthStore {
 export const useAuth = create<AuthStore>((set) => ({
     signIn: async ({ email, password }) => {
         try {
+            set({ isLoggingIn: true })
             signIn({
                 email,
                 password,
                 redirectLink: '',
-            }).then((data) => {
-                if (data.status === 200) {
-                    set({ isLoggingIn: false })
-                    toast.success('Login realizado com sucesso!')
-                    Cookies.set('auth_token', data.data, {
-                        expires: 7,
-                        secure: true,
-                        sameSite: 'strict',
-                    })
-                    set({ token: data.data })
-                } else {
-                    toast.error('Email ou senha inválidos, tente novamente!')
-                }
             })
+                .then((data) => {
+                    if (data.status === 200) {
+                        set({ isLoggingIn: false })
+                        toast.success('Login realizado com sucesso!')
+                        Cookies.set('auth_token', data.data, {
+                            expires: 7,
+                            secure: true,
+                            sameSite: 'strict',
+                        })
+                        set({ token: data.data })
+                        set({ isAuthenticated: true })
+                    } else {
+                        set({ isLoggingIn: false })
+                        toast.error(
+                            'Email ou senha inválidos, tente novamente!'
+                        )
+                    }
+                })
+                .catch(() => {
+                    set({ isLoggingIn: false })
+                    toast.error('Error on authentication hook!')
+                })
         } catch {
             set({ isLoggingIn: false })
             toast.error('Error on authentication hook!')

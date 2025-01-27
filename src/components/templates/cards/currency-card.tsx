@@ -1,4 +1,3 @@
-import { Loader2 } from 'lucide-react'
 import {
     Card,
     CardContent,
@@ -6,7 +5,8 @@ import {
     CardTitle,
 } from '@/components/atoms/card'
 
-import { Skeleton } from '@/components/atoms/skeleton'
+import { floatToCurrency } from '@/utils/float-to-currency'
+import { CardLoading } from './card-loading'
 
 export type CurrencyCardType = {
     title: string
@@ -23,26 +23,23 @@ export const CurrencyCard: React.FC<CurrencyCardType> = ({
     icon,
     loading,
 }) => {
+    if (loading) {
+        return <CardLoading />
+    }
+
     return (
         <Card className='w-full'>
             <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                 <CardTitle className='text-base font-semibold'>
                     {title}
                 </CardTitle>
-                {loading ? (
-                    <Loader2 className='h-4 w-4 animate-spin text-muted-foreground' />
-                ) : (
-                    icon
-                )}
+                {icon}
             </CardHeader>
             <CardContent className='space-y-1'>
-                {amount !== null ? (
+                {amount !== null && (
                     <>
                         <span className='text-2xl font-bold'>
-                            {amount.toLocaleString('pt-BR', {
-                                currency: 'BRL',
-                                style: 'currency',
-                            })}
+                            {floatToCurrency(amount)}
                         </span>
                         <p className='text-xs text-muted-foreground'>
                             <span
@@ -60,8 +57,6 @@ export const CurrencyCard: React.FC<CurrencyCardType> = ({
                             em relação ao mês passado
                         </p>
                     </>
-                ) : (
-                    <Skeleton />
                 )}
             </CardContent>
         </Card>

@@ -1,5 +1,5 @@
 import { api } from '@/config/axios.config'
-import { Transaction } from './get-transactions'
+import { Transaction } from './types/transaction'
 
 export const getCredits = async () => {
     const response = await api.get<Transaction[]>('/wallet/credits')

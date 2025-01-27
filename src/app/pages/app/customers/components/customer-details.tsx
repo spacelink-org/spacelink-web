@@ -1,12 +1,15 @@
 import { Button } from '@/components/atoms/button'
 import { Input } from '@/components/atoms/input'
+import { InputMask } from '@/components/organisms/input-mask'
 import { deleteUser } from '@/shared/api/delete-user'
-import { getUserById } from '@/shared/api/get-user-by-id'
+import { getUserById } from '@/shared/api/get-customer-details'
 import {
     updateUser,
     UpdateUserPayload,
     UpdateUserSchema,
 } from '@/shared/api/update-user'
+import { formatDocument } from '@/utils/number-to-cpf'
+import { formatPhone } from '@/utils/number-to-phone'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Trash } from 'lucide-react'
@@ -24,6 +27,8 @@ export function CustomerDetails({
     onDelete,
 }: CustomerDetailsProps) {
     const [isEditing, setIsEditing] = useState(false)
+    const [document, setDocument] = useState('')
+    const [phone, setPhone] = useState('')
 
     const { data: result, refetch: refetchUser } = useQuery({
         queryKey: ['user', customerId],
@@ -75,8 +80,10 @@ export function CustomerDetails({
         refetchUser()
         setValue('name', result?.name)
         setValue('email', result?.email)
-        setValue('phone', result?.phone)
+        setValue('phone', result?.phone ?? '')
         setValue('document', result?.document)
+        setDocument(result?.document ?? '')
+        setPhone(result?.phone ?? '')
     }, [result, setValue, refetchUser])
 
     return (
@@ -93,15 +100,25 @@ export function CustomerDetails({
                         readOnly={!isEditing}
                         {...register('email')}
                     />
-                    <Input
+                    <InputMask
+                        mask='(##) #####-####'
                         placeholder='Telefone'
                         readOnly={!isEditing}
-                        {...register('phone')}
+                        value={
+                            isEditing ? phone : formatPhone(result?.phone ?? '')
+                        }
+                        onChange={(value) => setPhone(value)}
                     />
-                    <Input
+                    <InputMask
+                        mask='###.###.###-##'
                         placeholder='Documento'
                         readOnly={!isEditing}
-                        {...register('document')}
+                        onChange={(value) => setDocument(value)}
+                        value={
+                            isEditing
+                                ? document
+                                : formatDocument(result?.document ?? '')
+                        }
                     />
                     <div className='flex gap-2'>
                         {isEditing && (
