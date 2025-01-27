@@ -22,7 +22,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { isoToBrDate } from '@/utils/iso-to-br-date'
 import { ColumnDef } from '@tanstack/react-table'
 import { TransferKey } from '@/shared/api/types/transfer-key'
-import { Trash } from 'lucide-react'
+import { Plus, Trash } from 'lucide-react'
 import {
     AlertDialog,
     AlertDialogTitle,
@@ -33,6 +33,7 @@ import {
     AlertDialogAction,
 } from '@/components/atoms/alert-dialog'
 import { deleteTransferKey } from '@/shared/api/delete-transfer-key'
+import { useIsMobile } from '@/shared/hooks/use-mobile'
 
 export default function Billing() {
     const { data: result, refetch } = useQuery({
@@ -131,7 +132,7 @@ export default function Billing() {
     ]
 
     return (
-        <div className='flex flex-col gap-4'>
+        <div className='flex w-full flex-col gap-4'>
             <div className='flex items-center gap-2 justify-between'>
                 <div className='flex flex-col'>
                     <Label className='text-lg font-semibold'>
@@ -143,7 +144,12 @@ export default function Billing() {
                 </div>
                 <Dialog>
                     <DialogTrigger>
-                        <Button variant='secondary'>Adicionar chave</Button>
+                        <Button
+                            variant='secondary'
+                            size={useIsMobile() ? 'icon' : 'default'}
+                        >
+                            {useIsMobile() ? <Plus /> : 'Adicionar chave'}
+                        </Button>
                     </DialogTrigger>
                     <DialogContent>
                         <div className='flex flex-col'>

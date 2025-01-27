@@ -62,7 +62,7 @@ export default function Withdraw() {
                 icon={<DollarSign />}
                 loading={false}
             />
-            <div className='grid grid-cols-2 gap-4'>
+            <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
                 <Card>
                     <CardHeader>
                         <CardTitle>Retirar saldo</CardTitle>

@@ -3,6 +3,7 @@ import { Label } from '@/components/atoms/label'
 import { BellIcon, CreditCardIcon, UserIcon } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router'
 import { cn } from '../types/cn'
+import { useIsMobile } from '../hooks/use-mobile'
 
 export default function ProfileLayout({
     children,
@@ -27,36 +28,42 @@ export default function ProfileLayout({
                 </Label>
             </div>
             <div className='grid grid-cols-12 gap-4'>
-                <div className='col-span-3'>
+                <div className='md:col-span-3 col-span-2'>
                     <div className='flex flex-col gap-2'>
                         <Button
                             variant='ghost'
+                            size={useIsMobile() ? 'icon' : 'default'}
                             className={cn(
-                                'w-full justify-start font-normal',
+                                'w-full font-normal',
+                                !useIsMobile() && 'justify-start',
                                 isAccount &&
                                     'bg-secondary text-secondary-foreground'
                             )}
                             onClick={() => navigate('/app/profile')}
                         >
                             <UserIcon className='w-4 h-4' />
-                            Conta
+                            {useIsMobile() ? '' : 'Conta'}
                         </Button>
                         <Button
                             variant='ghost'
+                            size={useIsMobile() ? 'icon' : 'default'}
                             className={cn(
-                                'w-full justify-start font-normal',
+                                'w-full font-normal',
+                                !useIsMobile() && 'justify-start',
                                 isBilling &&
                                     'bg-secondary text-secondary-foreground'
                             )}
                             onClick={() => navigate('/app/profile/billing')}
                         >
                             <CreditCardIcon className='w-4 h-4' />
-                            Opções de pagamento
+                            {useIsMobile() ? '' : 'Pagamento'}
                         </Button>
                         <Button
                             variant='ghost'
+                            size={useIsMobile() ? 'icon' : 'default'}
                             className={cn(
-                                'w-full justify-start font-normal',
+                                'w-full font-normal',
+                                !useIsMobile() && 'justify-start',
                                 isNotifications &&
                                     'bg-secondary text-secondary-foreground'
                             )}
@@ -65,11 +72,11 @@ export default function ProfileLayout({
                             }
                         >
                             <BellIcon className='w-4 h-4' />
-                            Notificações
+                            {useIsMobile() ? '' : 'Notificações'}
                         </Button>
                     </div>
                 </div>
-                <div className='col-span-8'>{children}</div>
+                <div className='col-span-10 md:col-span-9'>{children}</div>
             </div>
         </div>
     )

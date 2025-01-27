@@ -16,7 +16,7 @@ export default function Account() {
                 <Label className='text-lg font-semibold'>Dados pessoais</Label>
                 <div className='flex flex-col gap-2'>
                     <Input placeholder='Nome' value={me?.data.name} />
-                    <div className='flex gap-2'>
+                    <div className='flex flex-col gap-2 sm:flex-row'>
                         <Input placeholder='Email' value={me?.data.email} />
                         <Input placeholder='Telefone' value={me?.data.phone} />
                         <Input placeholder='CPF' value={me?.data.document} />

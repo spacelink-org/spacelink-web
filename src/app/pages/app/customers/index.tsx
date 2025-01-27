@@ -32,6 +32,7 @@ import { UserStatusBadge } from '@/components/templates/badges/user-status-badge
 import { InputMask } from '@/components/organisms/input-mask'
 import { formatPhone } from '@/utils/number-to-phone'
 import { formatDocument } from '@/utils/number-to-cpf'
+import { useIsMobile } from '@/shared/hooks/use-mobile'
 
 export default function CustomersPage() {
     const [searchParams, setSearchParams] = useSearchParams()
@@ -117,24 +118,28 @@ export default function CustomersPage() {
             accessorKey: 'email',
             cell: (info: { getValue: () => unknown }) =>
                 info.getValue() as string,
+            show: !useIsMobile(),
         },
         {
             header: 'Telefone',
             accessorKey: 'phone',
             cell: (info: { getValue: () => unknown }) =>
                 formatPhone(info.getValue() as string),
+            show: !useIsMobile(),
         },
         {
             header: 'Documento',
             accessorKey: 'document',
             cell: (info: { getValue: () => unknown }) =>
                 formatDocument(info.getValue() as string),
+            show: !useIsMobile(),
         },
         {
             header: 'Criado em',
             accessorKey: 'createdAt',
             cell: (info: { getValue: () => unknown }) =>
                 isoToBrDate(info.getValue() as string),
+            show: !useIsMobile(),
         },
         {
             header: 'Status',
@@ -180,7 +185,7 @@ export default function CustomersPage() {
                 </>
             ),
         },
-    ]
+    ].filter((column) => column.show !== false)
 
     return (
         <div>
