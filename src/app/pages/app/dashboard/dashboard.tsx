@@ -40,10 +40,11 @@ export const Dashboard = () => {
         <div className='flex flex-col gap-4'>
             <div className='flex flex-col gap-2'>
                 <Label className='text-2xl font-semibold'>
-                    {getGreetingByHour(new Date().getHours())}, Cristian! 😄
+                    {getGreetingByHour(new Date().getHours())}, {me?.data.name}!
+                    😄
                 </Label>
                 <Label className='text-xs font-normal font-mono'>
-                    Seja {identifyPronounFromName('Cristian')} ao seu painel
+                    Seja {identifyPronounFromName(me?.data.name)} ao seu painel
                 </Label>
             </div>
             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>

@@ -7,6 +7,7 @@ import ConfirmEmail from './register/components/confirm-email'
 import SuccessPage from './register/components/success-page'
 import RedirectPage from './redirect'
 import Payment from './payment'
+import FirstAccess from './first-access'
 
 export const LoginRoutes = () => {
     return (
@@ -23,6 +24,7 @@ export const RegisterRoutes = () => {
             <Route path='/' element={<RegisterPage />} />
             <Route path='confirm-email' element={<ConfirmEmail />} />
             <Route path='success' element={<SuccessPage />} />
+            <Route path='create-password' element={<FirstAccess />} />
         </Routes>
     )
 }
