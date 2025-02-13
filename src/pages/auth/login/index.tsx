@@ -15,7 +15,7 @@ import { LoginPayload, LoginSchema } from '@/shared/types/dto/login-dto'
 import { useAuth } from '@/shared/hooks/use-auth'
 
 export const LoginPage = () => {
-    const { signIn } = useAuth()
+    const { signIn, isLoggingIn } = useAuth()
 
     const { register, handleSubmit } = useForm<LoginPayload>({
         resolver: zodResolver(LoginSchema),
@@ -67,15 +67,15 @@ export const LoginPage = () => {
                                     type='password'
                                     placeholder='**************'
                                     required
-                                    disabled={false}
+                                    disabled={isLoggingIn}
                                     {...register('password')}
                                 />
                             </div>
                             <Button
                                 type='submit'
                                 className='w-full'
-                                loading={false}
-                                disabled={false}
+                                loading={isLoggingIn}
+                                disabled={isLoggingIn}
                             >
                                 Entrar
                             </Button>
