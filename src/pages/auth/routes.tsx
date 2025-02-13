@@ -8,6 +8,7 @@ import SuccessPage from './register/components/success-page'
 import RedirectPage from './redirect'
 import Payment from './payment'
 import FirstAccess from './first-access'
+import ResetPasswordPage from './reset-password'
 
 export const LoginRoutes = () => {
     return (
@@ -41,6 +42,14 @@ export const PaymentRoutes = () => {
     return (
         <Routes>
             <Route path='/' element={<Payment />} />
+        </Routes>
+    )
+}
+
+export const ResetPasswordRoutes = () => {
+    return (
+        <Routes>
+            <Route path='/:token' element={<ResetPasswordPage />} />
         </Routes>
     )
 }

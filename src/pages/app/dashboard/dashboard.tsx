@@ -17,7 +17,7 @@ export const Dashboard = () => {
 
     const { data: me, isLoading: meLoading } = useQuery({
         queryKey: ['me'],
-        queryFn: () => api.get('/me'),
+        queryFn: () => api.get('users/get-me'),
     })
 
     const allTransactionsAmount =

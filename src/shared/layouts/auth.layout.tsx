@@ -37,8 +37,8 @@ export default function AuthLayout() {
                         </div>
                     </div>
                 </div>
-                <div className='relative hidden lg:block p-4'>
-                    <div className='flex w-full h-full rounded-lg'>
+                <div className='flex flex-col col-span-1 w-full h-screen'>
+                    <div className='flex items-center justify-center overflow-hidden p-4'>
                         <img
                             src={Noise}
                             alt='Noise'

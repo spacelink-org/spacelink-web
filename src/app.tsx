@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@/shared/providers/theme.provider'
-import { AppRouter } from './router'
+import { AppRouter } from './routes'
 import { RootProvider } from '@/shared/providers/root.provider'
 import { Helmet, HelmetProvider } from 'react-helmet-async'
 

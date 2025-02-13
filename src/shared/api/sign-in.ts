@@ -1,7 +1,6 @@
 import { api } from '@/config/axios.config'
-import { SignInPayload } from '@/shared/hooks/use-auth'
 
-export const signIn = async (payload: SignInPayload) => {
+export const signIn = async (payload: { email: string; password: string }) => {
     const response = await api.post('/sign-in', payload)
     return response
 }

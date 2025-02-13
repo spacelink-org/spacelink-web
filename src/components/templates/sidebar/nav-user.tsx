@@ -26,24 +26,23 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/atoms/avatar'
 import { useNavigate } from 'react-router'
 import { UserLoading } from '../loading/user-loading'
+import { useAuth } from '@/shared/hooks/use-auth'
 
 interface NavUserProps {
     avatar?: string
     name: string
     email: string
-    signOut: () => void
     isLoading: boolean
 }
 
-export function NavUser({
-    avatar,
-    name,
-    email,
-    signOut,
-    isLoading,
-}: NavUserProps) {
+export function NavUser({ avatar, name, email, isLoading }: NavUserProps) {
     const { isMobile } = useSidebar()
     const navigate = useNavigate()
+    const { signOut } = useAuth()
+
+    const handleSignOut = () => {
+        signOut()
+    }
 
     if (isLoading) {
         return <UserLoading />
@@ -127,7 +126,7 @@ export function NavUser({
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem onClick={signOut}>
+                        <DropdownMenuItem onClick={handleSignOut}>
                             <LogOut />
                             Log out
                         </DropdownMenuItem>

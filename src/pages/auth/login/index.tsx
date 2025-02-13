@@ -11,11 +11,12 @@ import { Input } from '@/components/atoms/input'
 import { Label } from '@/components/atoms/label'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useAuth } from '@/shared/hooks/use-auth'
 import { LoginPayload, LoginSchema } from '@/shared/types/dto/login-dto'
+import { useAuth } from '@/shared/hooks/use-auth'
 
 export const LoginPage = () => {
     const { signIn, isLoggingIn } = useAuth()
+
     const { register, handleSubmit } = useForm<LoginPayload>({
         resolver: zodResolver(LoginSchema),
     })
@@ -23,7 +24,6 @@ export const LoginPage = () => {
     const handleSignIn = async (data: LoginPayload) => {
         await signIn({
             ...data,
-            redirectLink: '',
         })
     }
 

@@ -21,7 +21,6 @@ import {
     UsersIcon,
     WalletIcon,
 } from 'lucide-react'
-import { useAuth } from '@/shared/hooks/use-auth'
 import { Link, useLocation, useNavigate } from 'react-router'
 import { api } from '@/config/axios.config'
 import { useQuery } from '@tanstack/react-query'
@@ -35,8 +34,6 @@ import { NavUser } from './nav-user'
 import { Label } from '@/components/atoms/label'
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-    const { signOut } = useAuth()
-
     const { data: me, isLoading: meLoading } = useQuery({
         queryKey: ['me'],
         queryFn: () => api.get('/users/get-me'),
@@ -206,7 +203,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     avatar={me?.data.avatar}
                     name={me?.data.name}
                     email={me?.data.email}
-                    signOut={signOut}
                     isLoading={meLoading}
                 />
             </SidebarFooter>

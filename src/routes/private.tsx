@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router'
-import AppLayout from '../../shared/layouts/app.layout'
+import AppLayout from '../shared/layouts/app.layout'
 import { Dashboard } from '../pages/app/dashboard/dashboard'
 import { CustomersRoutes } from '../pages/app/customers/routes'
 import { WalletRoutes } from '../pages/app/wallet/routes'
